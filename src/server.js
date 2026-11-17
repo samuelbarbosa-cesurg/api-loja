@@ -2,6 +2,7 @@ import express from "express";
 import { fileURLToPath } from "node:url";
 import { autenticar } from "./middlewares/autenticar.js";
 import * as usuariosController from "./controllers/usuariosController.js";
+import * as statusApiController from "./controllers/statusApiController.js";
 
 
 
@@ -27,7 +28,8 @@ app.use((request, response, next) => {
 });
 app.use(express.json());
 
-
+app.get("/", statusApiController.verificarStatusApi)
+app.get("/status", statusApiController.verificarStatusApi)
 app.post("/usuarios", usuariosController.cadastrar);
 app.post("/login", usuariosController.login);
 
