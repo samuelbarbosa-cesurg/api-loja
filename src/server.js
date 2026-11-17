@@ -1,6 +1,8 @@
 import express from "express";
 import { fileURLToPath } from "node:url";
 import { autenticar } from "./middlewares/autenticar.js";
+import * as usuariosController from "./controllers/usuariosController.js";
+
 
 
 
@@ -26,14 +28,8 @@ app.use((request, response, next) => {
 app.use(express.json());
 
 
-app.get("/produtos",autenticar, produtoController.obterProdutos);
-app.get("/produtos/:id",autenticar, produtoController.buscarProduto);
-app.get("/pedidos",autenticar, pedidoController.listarPedidos);
-app.get("/pedidos/:id",autenticar, pedidoController.buscarPedido);
-app.post("/pedidos",autenticar, pedidoController.cadastrarPedido);
-app.patch("/pedidos/:id/status",autenticar, pedidoController.alterarStatusPedido);
-app.post("/funcionarios", funcionarioController.cadastrar);
-app.post("/login", funcionarioController.login);
+app.post("/usuarios", usuariosController.cadastrar);
+app.post("/login", usuariosController.login);
 
 app.use((req, res, next) => {
   res.status(404).json({
