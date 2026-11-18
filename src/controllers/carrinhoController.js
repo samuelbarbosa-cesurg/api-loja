@@ -27,7 +27,7 @@ export async function adicionarItem(request, response) {
     try{
       const token = request.headers.authorization?.split(" ")[1];
       const userId = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).id;
-      const { produtoId, quantidade } = request.body ?? {};
+      const { produtoId, quantidade = 1 } = request.body ?? {};
 
       if(!Number.isInteger(produtoId) || produtoId <= 0){
         return response.status(400).json({mensagem: "O produtoId precisa ser um número inteiro maior que zero"})
