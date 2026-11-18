@@ -102,6 +102,28 @@ export async function atualizarQuantidade(request, response) {
     }
 }
 
+export async function esvaziarCarrinho(request, response) {
+    try{
+      const token = request.headers.authorization?.split(" ")[1];
+      const userId = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).id;
+
+      await carrinhoLogic.esvaziarCarrinho(userId);
+
+      return response.status(200).send();
+    } catch (error) {
+      console.error(`Erro ao esvaziar carrinho: ${error.message}`);
+      if(error instanceof Error) {
+        return response.status(400).json({
+            mensagem: error.message,
+        });
+      }
+
+      return response.status(500).json({
+        mensagem: "Erro interno do servidor",
+      });
+    }
+}
+
 export async function removerItem(request, response) {
     try{
       const token = request.headers.authorization?.split(" ")[1];

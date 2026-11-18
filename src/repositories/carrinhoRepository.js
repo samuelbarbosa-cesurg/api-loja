@@ -34,6 +34,11 @@ export async function removerItem(usuarioId, produtoId) {
   db.prepare("DELETE FROM itens_carrinho WHERE usuario_id = ? AND produto_id = ?").run(usuarioId, produtoId);
 }
 
+// Remove todos os itens do carrinho do usuário.
+export async function esvaziarCarrinho(usuarioId) {
+  db.prepare("DELETE FROM itens_carrinho WHERE usuario_id = ?").run(usuarioId);
+}
+
 // Atualiza a quantidade de um item que já está no carrinho.
 export async function atualizarQuantidade(usuarioId, produtoId, quantidade) {
   db.prepare("UPDATE itens_carrinho SET quantidade = ? WHERE usuario_id = ? AND produto_id = ?").run(quantidade, usuarioId, produtoId);

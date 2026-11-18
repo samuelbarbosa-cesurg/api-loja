@@ -28,6 +28,10 @@ export async function atualizarQuantidade(usuarioId, produtoId, quantidade) {
 	await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, quantidade);
 }
 
+export async function esvaziarCarrinho(usuarioId) {
+	await carrinhoRepository.esvaziarCarrinho(usuarioId);
+}
+
 export async function removerItem(usuarioId, produtoId) {
 	const item = await carrinhoRepository.buscarItem(usuarioId, produtoId);
 	if (!item) {
