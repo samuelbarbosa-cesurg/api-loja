@@ -4,6 +4,17 @@ import * as formasPagamentoRepository from "../repositories/formasPagamentoRepos
 import * as carrinhoLogic from "./carrinhoLogic.js";
 import { ErroValidacao } from "../models/erroValidacao.js";
 
+export async function listarCompras(usuarioId) {
+	const compras = await comprasRepository.listarCompras(usuarioId);
+
+	for (const compra of compras) {
+		const itens = await comprasRepository.listarItensCompra(compra.id);
+		compra.itens = itens.map((item) => ({ ...item, subtotal: item.preco * item.quantidade }));
+	}
+
+	return compras;
+}
+
 export async function criarCompra(usuarioId, formaPagamento) {
 	const formasPagamento = await formasPagamentoRepository.listarFormasPagamento();
 	const formaValida = formasPagamento.find((forma) => forma.id === formaPagamento);
