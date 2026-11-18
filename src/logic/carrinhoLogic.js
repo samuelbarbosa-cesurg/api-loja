@@ -19,6 +19,15 @@ export async function listarCarrinho(usuarioId) {
 	return { usuarioId, itens, quantidadeTotal, total };
 }
 
+export async function atualizarQuantidade(usuarioId, produtoId, quantidade) {
+	const item = await carrinhoRepository.buscarItem(usuarioId, produtoId);
+	if (!item) {
+		throw new ErroNaoEncontrado("Item não encontrado no carrinho");
+	}
+
+	await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, quantidade);
+}
+
 export async function adicionarItem(usuarioId, produtoId, quantidade) {
 	const produto = await produtosRepository.buscarPorId(produtoId);
 	if (!produto) {
