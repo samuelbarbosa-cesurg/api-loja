@@ -30,6 +30,7 @@ app.use((request, response, next) => {
 app.use(express.json());
 
 app.get("/produtos", autenticar, produtosController.listarProdutos);
+app.get("/produtos/:id", autenticar, produtosController.buscarPorId);
 app.get("/", statusApiController.verificarStatusApi);
 app.get("/status", statusApiController.verificarStatusApi);
 app.post("/usuarios", usuariosController.cadastrar);

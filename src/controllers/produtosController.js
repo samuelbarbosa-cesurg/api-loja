@@ -24,11 +24,11 @@ export async function listarProdutos(request, response) {
     }
 }
 
-export async function buscarProduto(request, response){
+export async function buscarPorId(request, response){
     try{
         const id = request.params.id;
         if(Number.isInteger(Number(id)) && Number(id) > 0){
-            const produto = await produtosLogic.buscarProduto(id);
+            const produto = await produtosLogic.buscarPorId(id);
             if(!produto){
                 return response.status(404).json({mensagem: "Produto não encontrado"})
             }
@@ -37,7 +37,7 @@ export async function buscarProduto(request, response){
             return response.status(400).json({mensagem: "O ID do produto precisa ser um número"})
         }
     } catch (error) {
-        console.error(`Erro ao listar produto: ${error.message}`);
+        console.error(`Erro ao buscar produto: ${error.message}`);
 
         if(error instanceof Error) {
             return response.status(400).json({

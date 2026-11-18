@@ -48,9 +48,9 @@ export async function listarProdutos(categoria, busca) {
 // Retorna uma tarefa pelo id ou null quando ela não existe.
 export function buscarPorId(id) {
   // O ? mantém o valor separado do SQL e evita montar a consulta com strings.
-  const tarefa = db.prepare("SELECT * FROM tarefas WHERE id = ?").get(id);
+  const produto = db.prepare("SELECT * FROM produtos WHERE id = ?").get(id);
 
-  return mapearProduto(tarefa);
+  return mapearProduto(produto);
 }
 
 // Cria uma tarefa e retorna o registro completo com o id gerado pelo banco.

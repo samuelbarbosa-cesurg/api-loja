@@ -7,13 +7,12 @@ export async function listarProdutos(params) {
 	return await produtosRepository.listarProdutos(filtroCategoria, filtroBusca);
 }
 
-export async function buscarProduto(id) {
+export async function buscarPorId(id) {
 	const idFiltrado = Number(id);
-	const produtos = await produtosRepository.listarProdutos();
+	const produto = await produtosRepository.buscarPorId(idFiltrado);
 
 	if (!isNaN(idFiltrado)) {
-		const produtoFiltrado = produtos.find((produto) => produto.id === idFiltrado);
-		return produtoFiltrado;
+		return produto;
 	}
 
 	return null;
