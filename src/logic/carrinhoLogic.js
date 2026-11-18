@@ -28,6 +28,15 @@ export async function atualizarQuantidade(usuarioId, produtoId, quantidade) {
 	await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, quantidade);
 }
 
+export async function removerItem(usuarioId, produtoId) {
+	const item = await carrinhoRepository.buscarItem(usuarioId, produtoId);
+	if (!item) {
+		throw new ErroNaoEncontrado("Item não encontrado no carrinho");
+	}
+
+	await carrinhoRepository.removerItem(usuarioId, produtoId);
+}
+
 export async function adicionarItem(usuarioId, produtoId, quantidade) {
 	const produto = await produtosRepository.buscarPorId(produtoId);
 	if (!produto) {

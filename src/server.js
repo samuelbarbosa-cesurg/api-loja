@@ -39,6 +39,7 @@ app.get("/formas-pagamento", autenticar, formasPagamentoController.listarFormasP
 app.get("/carrinho", autenticar, carrinhoController.listarCarrinho);
 app.post("/carrinho/itens", autenticar, carrinhoController.adicionarItem);
 app.patch("/carrinho/itens/:produtoId", autenticar, carrinhoController.atualizarQuantidade);
+app.delete("/carrinho/itens/:produtoId", autenticar, carrinhoController.removerItem);
 app.get("/", statusApiController.verificarStatusApi);
 app.get("/status", statusApiController.verificarStatusApi);
 app.post("/usuarios", usuariosController.cadastrar);
