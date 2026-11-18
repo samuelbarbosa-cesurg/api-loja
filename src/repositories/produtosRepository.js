@@ -2,17 +2,6 @@
 // As outras camadas trabalham apenas com objetos JavaScript.
 import db from "../database/conexao.js";
 
-// O SQLite guarda booleanos como 0 e 1.
-// A API devolve esses valores como false e true.
-function mapearProduto(linha) {
-  if (!linha) return null;
-
-  return {
-    ...linha,
-    concluida: linha.concluida === 1,
-  };
-}
-
 // Retorna todas os produtos ordenados pelo id.
 
 export async function listarProdutos(categoria, busca) {
@@ -41,7 +30,7 @@ export async function listarProdutos(categoria, busca) {
     ORDER BY id
   `).all(...valores);
 
-  return produtos.map(mapearProduto);
+  return produtos;
 }
 
 
@@ -50,7 +39,7 @@ export function buscarPorId(id) {
   // O ? mantém o valor separado do SQL e evita montar a consulta com strings.
   const produto = db.prepare("SELECT * FROM produtos WHERE id = ?").get(id);
 
-  return mapearProduto(produto);
+  return produto || null;
 }
 
 // Cria uma tarefa e retorna o registro completo com o id gerado pelo banco.

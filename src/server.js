@@ -4,6 +4,7 @@ import { autenticar } from "./middlewares/autenticar.js";
 import * as usuariosController from "./controllers/usuariosController.js";
 import * as statusApiController from "./controllers/statusApiController.js";
 import * as produtosController from "./controllers/produtosController.js";
+import * as categoriasController from "./controllers/categoriasController.js";
 
 
 
@@ -31,6 +32,7 @@ app.use(express.json());
 
 app.get("/produtos", autenticar, produtosController.listarProdutos);
 app.get("/produtos/:id", autenticar, produtosController.buscarPorId);
+app.get("/categorias", autenticar, categoriasController.listarCategorias);
 app.get("/", statusApiController.verificarStatusApi);
 app.get("/status", statusApiController.verificarStatusApi);
 app.post("/usuarios", usuariosController.cadastrar);
