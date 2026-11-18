@@ -5,7 +5,7 @@ export function autenticar(request, response, next) {
   const [tipo, token] = header.split(" ");
 
   if (tipo !== "Bearer" || !token) {
-    return response.status(401).json({ mensagem: "Faça login para continuar" });
+    return response.status(401).json({ erro: "Faça login para continuar" });
   }
 
   try {
@@ -13,6 +13,6 @@ export function autenticar(request, response, next) {
     request.usuario = dados; 
     return next();
   } catch {
-    return response.status(401).json({ mensagem: "Token inválido ou expirado" });
+    return response.status(401).json({ erro: "Token inválido ou expirado" });
   }
 }
