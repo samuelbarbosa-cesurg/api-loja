@@ -8,10 +8,6 @@ export async function listarCarrinho(request, response) {
       const userId = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString()).id;
       const carrinho = await carrinhoLogic.listarCarrinho(userId);
 
-      if(carrinho.length === 0){
-        return response.status(404).json({mensagem: "Nenhuma carrinho encontrado"})
-      }
-
       return response.status(200).json(carrinho);
     } catch (error) {
       console.error(`Erro ao listar carrinho: ${error.message}`);
