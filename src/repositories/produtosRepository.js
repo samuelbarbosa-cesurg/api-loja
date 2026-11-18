@@ -14,11 +14,36 @@ function mapearProduto(linha) {
 }
 
 // Retorna todas os produtos ordenados pelo id.
-export async function listarProdutos() {
-  const produtos = db.prepare("SELECT * FROM produtos ORDER BY id").all();
+
+export async function listarProdutos(categoria, busca) {
+  let filtros = [];
+  let valores = [];
+
+  if (categoria) {
+    filtros.push('categoria = ?');
+    valores.push(categoria);
+  }
+
+  if (busca) {
+    filtros.push('(nome LIKE ? OR descricao LIKE ?)');
+    valores.push(`%${busca}%`, `%${busca}%`);
+  }
+
+  let where = '';
+
+  if (filtros.length > 0) {
+    where = 'WHERE ' + filtros.join(' AND ');
+  }
+
+  const produtos = db.prepare(`
+    SELECT * FROM produtos
+    ${where}
+    ORDER BY id
+  `).all(...valores);
 
   return produtos.map(mapearProduto);
 }
+
 
 // Retorna uma tarefa pelo id ou null quando ela não existe.
 export function buscarPorId(id) {
