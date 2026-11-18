@@ -43,6 +43,7 @@ app.patch("/carrinho/itens/:produtoId", autenticar, carrinhoController.atualizar
 app.delete("/carrinho/itens/:produtoId", autenticar, carrinhoController.removerItem);
 app.delete("/carrinho", autenticar, carrinhoController.esvaziarCarrinho);
 app.get("/compras", autenticar, comprasController.listarCompras);
+app.get("/compras/:id", autenticar, comprasController.buscarPorId);
 app.post("/compras", autenticar, comprasController.criarCompra);
 app.get("/", statusApiController.verificarStatusApi);
 app.get("/status", statusApiController.verificarStatusApi);

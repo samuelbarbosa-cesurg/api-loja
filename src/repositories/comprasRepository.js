@@ -19,6 +19,24 @@ export async function listarCompras(usuarioId) {
   `).all(usuarioId);
 }
 
+// Retorna uma compra do usuário pelo id ou null quando ela não existe.
+export async function buscarPorId(id, usuarioId) {
+  const compra = db.prepare(`
+    SELECT
+      id,
+      usuario_id AS usuarioId,
+      quantidade_total AS quantidadeTotal,
+      total,
+      forma_pagamento AS formaPagamento,
+      status,
+      criada_em AS criadaEm
+    FROM compras
+    WHERE id = ? AND usuario_id = ?
+  `).get(id, usuarioId);
+
+  return compra || null;
+}
+
 // Retorna os itens de uma compra.
 export async function listarItensCompra(compraId) {
   return db.prepare(`

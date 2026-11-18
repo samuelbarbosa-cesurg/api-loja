@@ -3,6 +3,7 @@ import * as carrinhoRepository from "../repositories/carrinhoRepository.js";
 import * as formasPagamentoRepository from "../repositories/formasPagamentoRepository.js";
 import * as carrinhoLogic from "./carrinhoLogic.js";
 import { ErroValidacao } from "../models/erroValidacao.js";
+import { ErroNaoEncontrado } from "../models/erroNaoEncontrado.js";
 
 export async function listarCompras(usuarioId) {
 	const compras = await comprasRepository.listarCompras(usuarioId);
@@ -13,6 +14,18 @@ export async function listarCompras(usuarioId) {
 	}
 
 	return compras;
+}
+
+export async function buscarPorId(id, usuarioId) {
+	const compra = await comprasRepository.buscarPorId(id, usuarioId);
+	if (!compra) {
+		throw new ErroNaoEncontrado("Compra não encontrada");
+	}
+
+	const itens = await comprasRepository.listarItensCompra(compra.id);
+	compra.itens = itens.map((item) => ({ ...item, subtotal: item.preco * item.quantidade }));
+
+	return compra;
 }
 
 export async function criarCompra(usuarioId, formaPagamento) {
