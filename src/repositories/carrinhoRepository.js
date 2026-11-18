@@ -7,3 +7,18 @@ export async function listarCarrinho(usuarioId) {
   const carrinho = db.prepare("SELECT * FROM itens_carrinho WHERE usuario_id = ? ORDER BY usuario_id").all(usuarioId);
   return carrinho;
 }
+
+// Busca um item do carrinho do usuário pelo id do produto.
+export async function buscarItem(usuarioId, produtoId) {
+  return db.prepare("SELECT * FROM itens_carrinho WHERE usuario_id = ? AND produto_id = ?").get(usuarioId, produtoId) ?? null;
+}
+
+// Adiciona um novo item no carrinho.
+export async function adicionarItem(usuarioId, produtoId, quantidade) {
+  db.prepare("INSERT INTO itens_carrinho (usuario_id, produto_id, quantidade) VALUES (?, ?, ?)").run(usuarioId, produtoId, quantidade);
+}
+
+// Atualiza a quantidade de um item que já está no carrinho.
+export async function atualizarQuantidade(usuarioId, produtoId, quantidade) {
+  db.prepare("UPDATE itens_carrinho SET quantidade = ? WHERE usuario_id = ? AND produto_id = ?").run(quantidade, usuarioId, produtoId);
+}
