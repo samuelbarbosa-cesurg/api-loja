@@ -7,6 +7,7 @@ import * as produtosController from "./controllers/produtosController.js";
 import * as categoriasController from "./controllers/categoriasController.js";
 import * as formasPagamentoController from "./controllers/formasPagamentoController.js";
 import * as carrinhoController from "./controllers/carrinhoController.js";
+import * as comprasController from "./controllers/comprasController.js";
 
 
 
@@ -41,6 +42,7 @@ app.post("/carrinho/itens", autenticar, carrinhoController.adicionarItem);
 app.patch("/carrinho/itens/:produtoId", autenticar, carrinhoController.atualizarQuantidade);
 app.delete("/carrinho/itens/:produtoId", autenticar, carrinhoController.removerItem);
 app.delete("/carrinho", autenticar, carrinhoController.esvaziarCarrinho);
+app.post("/compras", autenticar, comprasController.criarCompra);
 app.get("/", statusApiController.verificarStatusApi);
 app.get("/status", statusApiController.verificarStatusApi);
 app.post("/usuarios", usuariosController.cadastrar);
