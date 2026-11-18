@@ -52,8 +52,7 @@ app.post("/login", usuariosController.login);
 
 app.use((req, res, next) => {
   res.status(404).json({
-    erro: 'Rota não encontrada',
-    status: 404
+    erro: `Rota não encontrada: ${req.method} ${req.originalUrl}`
   });
 });
 
