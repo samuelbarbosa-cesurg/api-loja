@@ -61,6 +61,9 @@ export async function criarCompra(usuarioId, quantidadeTotal, total, formaPagame
     for (const item of itens) {
       db.prepare("INSERT INTO itens_compra (compra_id, produto_id, nome, preco, imagem, quantidade) VALUES (?, ?, ?, ?, ?, ?)")
         .run(compraId, item.produtoId, item.nome, item.preco, item.imagem, item.quantidade);
+
+      db.prepare("UPDATE produtos SET estoque = estoque - ? WHERE id = ?")
+        .run(item.quantidade, item.produtoId);
     }
 
     db.exec("COMMIT");
