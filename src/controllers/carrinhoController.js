@@ -38,9 +38,9 @@ export async function adicionarItem(request, response) {
         return response.status(400).json({erro: "A quantidade precisa ser um número inteiro maior que zero"})
       }
 
-      await carrinhoLogic.adicionarItem(userId, produtoId, quantidade);
+      const itemAdicionado = await carrinhoLogic.adicionarItem(userId, produtoId, quantidade);
 
-      return response.status(201).send();
+      return response.status(201).json(itemAdicionado);
     } catch (error) {
       console.error(`Erro ao adicionar item no carrinho: ${error.message}`);
       if(error instanceof ErroNaoEncontrado) {

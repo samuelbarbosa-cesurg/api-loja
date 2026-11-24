@@ -62,8 +62,10 @@ export async function adicionarItem(usuarioId, produtoId, quantidade) {
 		const novaQuantidade = item.quantidade + quantidade;
 		verificarEstoque(produto, novaQuantidade);
 		await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, novaQuantidade);
+		return { produtoId: produtoId, quantidade: novaQuantidade };
 	} else {
 		verificarEstoque(produto, quantidade);
 		await carrinhoRepository.adicionarItem(usuarioId, produtoId, quantidade);
+		return { produtoId: produtoId, quantidade: quantidade };
 	}
 }
