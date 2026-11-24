@@ -69,7 +69,7 @@ export async function criarCompra(request, response) {
 
       await comprasLogic.criarCompra(userId, formaPagamento);
 
-      return response.status(201).send();
+      return response.status(201).json({"status":"confirmada"});
     } catch (error) {
       console.error(`Erro ao criar compra: ${error.message}`);
       if(error instanceof ErroValidacao) {
