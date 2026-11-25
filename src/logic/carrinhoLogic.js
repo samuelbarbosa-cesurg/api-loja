@@ -59,10 +59,9 @@ export async function adicionarItem(usuarioId, produtoId, quantidade) {
 
 	const item = await carrinhoRepository.buscarItem(usuarioId, produtoId);
 	if (item) {
-		const novaQuantidade = item.quantidade + quantidade;
-		verificarEstoque(produto, novaQuantidade);
-		await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, novaQuantidade);
-		return { produtoId: produtoId, quantidade: novaQuantidade };
+		verificarEstoque(produto, quantidade);
+		await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, quantidade);
+		return { produtoId: produtoId, quantidade: quantidade };
 	} else {
 		verificarEstoque(produto, quantidade);
 		await carrinhoRepository.adicionarItem(usuarioId, produtoId, quantidade);
