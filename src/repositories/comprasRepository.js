@@ -61,10 +61,11 @@ export async function criarCompra(usuarioId, quantidadeTotal, total, formaPagame
     for (const item of itens) {
       db.prepare("INSERT INTO itens_compra (compra_id, produto_id, nome, preco, imagem, quantidade) VALUES (?, ?, ?, ?, ?, ?)")
         .run(compraId, item.produtoId, item.nome, item.preco, item.imagem, item.quantidade);
-
-      db.prepare("UPDATE produtos SET estoque = estoque - ? WHERE id = ?")
-        .run(item.quantidade, item.produtoId);
     }
+
+    // O estoque já foi descontado ao colocar no carrinho, então os itens
+    // saem do carrinho sem devolução, na mesma transação da compra.
+    db.prepare("DELETE FROM itens_carrinho WHERE usuario_id = ?").run(usuarioId);
 
     db.exec("COMMIT");
     return compraId;

@@ -116,9 +116,9 @@ test("10. GET /carrinho vazio", async () => {
   assert.equal(dados.total, 0);
 });
 
-test("11. POST /carrinho/itens duas vezes soma a quantidade", async () => {
+test("11. POST /carrinho/itens duas vezes grava a última quantidade", async () => {
   const primeira = await requisicao("POST", "/carrinho/itens", { produtoId: 1 }, token);
-  const segunda = await requisicao("POST", "/carrinho/itens", { produtoId: 1 }, token);
+  const segunda = await requisicao("POST", "/carrinho/itens", { produtoId: 1, quantidade: 2 }, token);
   assert.equal(primeira.status, 201);
   assert.equal(segunda.status, 201);
 

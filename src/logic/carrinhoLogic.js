@@ -27,14 +27,15 @@ export async function atualizarQuantidade(usuarioId, produtoId, quantidade) {
 	}
 
 	const produto = await produtosRepository.buscarPorId(produtoId);
-	verificarEstoque(produto, quantidade);
-
-	await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, quantidade);
+	await definirQuantidade(usuarioId, produto, quantidade);
 }
 
-export function verificarEstoque(produto, quantidade) {
-	if (quantidade > produto.estoque) {
-		throw new ErroValidacao(`Estoque insuficiente: há ${produto.estoque} unidade(s) de "${produto.nome}".`);
+async function definirQuantidade(usuarioId, produto, quantidade) {
+	const definirQuantidade = await carrinhoRepository.definirQuantidade(usuarioId, produto.id, quantidade);
+	if (!definirQuantidade) {
+		const item = await carrinhoRepository.buscarItem(usuarioId, produto.id);
+		const disponivel = produto.estoque + (item?.quantidade ?? 0);
+		throw new ErroValidacao(`Estoque insuficiente: há ${disponivel} unidade(s) de "${produto.nome}".`);
 	}
 }
 
@@ -57,14 +58,6 @@ export async function adicionarItem(usuarioId, produtoId, quantidade) {
 		throw new ErroNaoEncontrado("Produto não encontrado");
 	}
 
-	const item = await carrinhoRepository.buscarItem(usuarioId, produtoId);
-	if (item) {
-		verificarEstoque(produto, quantidade);
-		await carrinhoRepository.atualizarQuantidade(usuarioId, produtoId, quantidade);
-		return { produtoId: produtoId, quantidade: quantidade };
-	} else {
-		verificarEstoque(produto, quantidade);
-		await carrinhoRepository.adicionarItem(usuarioId, produtoId, quantidade);
-		return { produtoId: produtoId, quantidade: quantidade };
-	}
+	await definirQuantidade(usuarioId, produto, quantidade);
+	return { produtoId, quantidade };
 }

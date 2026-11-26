@@ -1,7 +1,5 @@
 import * as comprasRepository from "../repositories/comprasRepository.js";
-import * as carrinhoRepository from "../repositories/carrinhoRepository.js";
 import * as formasPagamentoRepository from "../repositories/formasPagamentoRepository.js";
-import * as produtosRepository from "../repositories/produtosRepository.js";
 import * as carrinhoLogic from "./carrinhoLogic.js";
 import { ErroValidacao } from "../models/erroValidacao.js";
 import { ErroNaoEncontrado } from "../models/erroNaoEncontrado.js";
@@ -41,11 +39,6 @@ export async function criarCompra(usuarioId, formaPagamento) {
 		throw new ErroValidacao("O carrinho está vazio");
 	}
 
-	for (const item of carrinho.itens) {
-		const produto = await produtosRepository.buscarPorId(item.produtoId);
-		carrinhoLogic.verificarEstoque(produto, item.quantidade);
-	}
-
 	const compraId = await comprasRepository.criarCompra(
 		usuarioId,
 		carrinho.quantidadeTotal,
@@ -53,8 +46,6 @@ export async function criarCompra(usuarioId, formaPagamento) {
 		formaPagamento,
 		carrinho.itens
 	);
-
-	await carrinhoRepository.esvaziarCarrinho(usuarioId);
 
 	return compraId;
 }
