@@ -59,5 +59,5 @@ export async function adicionarItem(usuarioId, produtoId, quantidade) {
 	}
 
 	await definirQuantidade(usuarioId, produto, quantidade);
-	return { produtoId, quantidade };
+	return listarCarrinho(usuarioId);
 }
